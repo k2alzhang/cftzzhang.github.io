@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Nimbus brings docs, tasks, and conversations into one calm workspace so your team can ship faster.">
+	<title>Nimbus — Ship faster, together</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--primary: #f6821f;
+			--primary-hover: #ea580c;
+			--primary-text: #c2410c;
+			--amber: #faab41;
+			--brand-grad: linear-gradient(135deg, #faab41 0, #f6821f 100%);
+			--on-brand: #1c130a;
+			--bg: #F8FAFC;
+			--fg: #1E293B;
+			--muted: #475569;
+			--border: #E2E8F0;
+			--card: rgba(255, 255, 255, 0.62);
+			--radius: 14px;
+		}
+
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+		}
+
+		html {
+			scroll-behavior: smooth;
+		}
+
+		body {
+			margin: 0;
+			font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+			color: var(--fg);
+			background:
+				radial-gradient(1000px 480px at 85% -10%, rgba(246, 130, 31, 0.12), transparent 60%),
+				radial-gradient(800px 420px at 0% 0%, rgba(250, 171, 65, 0.14), transparent 55%),
+				linear-gradient(180deg, #FFF7ED 0%, var(--bg) 45%);
+			line-height: 1.6;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.container {
+			width: min(1120px, calc(100% - 40px));
+			margin-inline: auto;
+		}
+
+		/* —— Header —— */
+		.site-header {
+			position: sticky;
+			top: 0;
+			z-index: 50;
+			background: rgba(255, 255, 255, 0.75);
+			-webkit-backdrop-filter: blur(14px) saturate(160%);
+			backdrop-filter: blur(14px) saturate(160%);
+			border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+		}
+
+		@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+			.site-header {
+				background: #FFFFFF;
+			}
+		}
+
+		.nav {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			gap: 12px 24px;
+			padding: 14px 0;
+		}
+
+		.brand {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			font-weight: 700;
+			font-size: 1.125rem;
+			letter-spacing: -0.02em;
+		}
+
+		.brand-mark {
+			width: 30px;
+			height: 30px;
+			border-radius: 9px;
+			background: var(--brand-grad);
+			display: grid;
+			place-items: center;
+			color: var(--on-brand);
+			flex-shrink: 0;
+		}
+
+		.nav-links {
+			display: flex;
+			align-items: center;
+			gap: 28px;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			font-size: 0.9375rem;
+			font-weight: 500;
+			color: var(--muted);
+		}
+
+		.nav-links a {
+			cursor: pointer;
+			transition: color 180ms ease;
+		}
+
+		.nav-links a:hover {
+			color: var(--fg);
+		}
+
+		.nav-links a:focus-visible,
+		.btn:focus-visible {
+			outline: 2px solid var(--primary-text);
+			outline-offset: 3px;
+			border-radius: 6px;
+		}
+
+		/* —— Buttons —— */
+		.btn {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+			padding: 12px 22px;
+			border-radius: 999px;
+			font: inherit;
+			font-size: 0.9375rem;
+			font-weight: 600;
+			cursor: pointer;
+			border: 2px solid transparent;
+			transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+			text-align: center;
+		}
+
+		.btn:active {
+			transform: translateY(1px);
+		}
+
+		.btn-primary {
+			background: var(--brand-grad);
+			color: var(--on-brand);
+			border-color: transparent;
+			box-shadow: 0 4px 15px rgba(246, 130, 31, 0.35);
+		}
+
+		.btn-primary:hover {
+			background: linear-gradient(135deg, #f6821f 0, #ea580c 100%);
+			border-color: transparent;
+			color: var(--on-brand);
+		}
+
+		.btn-brand {
+			background: var(--brand-grad);
+			color: var(--on-brand);
+			border-color: transparent;
+			box-shadow: 0 2px 10px rgba(246, 130, 31, 0.3);
+		}
+
+		.btn-brand:hover {
+			background: linear-gradient(135deg, #f6821f 0, #ea580c 100%);
+			border-color: transparent;
+			color: var(--on-brand);
+		}
+
+		.btn-ghost {
+			background: rgba(255, 255, 255, 0.7);
+			color: var(--primary-text);
+			border-color: rgba(246, 130, 31, 0.45);
+		}
+
+		.btn-ghost:hover {
+			background: #FFFFFF;
+			border-color: var(--primary);
+		}
+
+		.btn-lg {
+			padding: 14px 28px;
+			font-size: 1rem;
+		}
+
+		/* —— Hero —— */
+		.hero {
+			padding: 88px 0 72px;
+			text-align: center;
+		}
+
+		.hero-badge {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 6px 14px;
+			border-radius: 999px;
+			background: rgba(246, 130, 31, 0.10);
+			border: 1px solid rgba(246, 130, 31, 0.22);
+			color: var(--primary-text);
+			font-size: 0.8125rem;
+			font-weight: 600;
+			letter-spacing: 0.02em;
+			margin-bottom: 24px;
+		}
+
+		.hero h1 {
+			margin: 0 auto 18px;
+			max-width: 18ch;
+			font-size: clamp(2.25rem, 5vw + 1rem, 3.75rem);
+			line-height: 1.12;
+			letter-spacing: -0.03em;
+			font-weight: 700;
+			color: var(--fg);
+		}
+
+		.hero-sub {
+			margin: 0 auto 36px;
+			max-width: 54ch;
+			font-size: clamp(1.0625rem, 1vw + 0.9rem, 1.25rem);
+			color: var(--muted);
+		}
+
+		.hero-actions {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 14px;
+		}
+
+		.hero-note {
+			margin: 18px 0 0;
+			font-size: 0.8125rem;
+			color: var(--muted);
+		}
+
+		/* —— Features —— */
+		.features {
+			padding: 24px 0 88px;
+		}
+
+		.section-head {
+			text-align: center;
+			max-width: 40rem;
+			margin: 0 auto 48px;
+		}
+
+		.section-head h2 {
+			margin: 0 0 12px;
+			font-size: clamp(1.625rem, 2vw + 1rem, 2.25rem);
+			letter-spacing: -0.02em;
+			line-height: 1.2;
+		}
+
+		.section-head p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 1.0625rem;
+		}
+
+		.feature-grid {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 24px;
+		}
+
+		.feature-card {
+			background: var(--card);
+			-webkit-backdrop-filter: blur(24px) saturate(180%);
+			backdrop-filter: blur(24px) saturate(180%);
+			border: none;
+			border-radius: var(--radius);
+			padding: 28px 26px;
+			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+			transition: transform 200ms ease, box-shadow 200ms ease;
+		}
+
+		@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+			.feature-card {
+				background: rgba(255, 255, 255, 0.92);
+			}
+		}
+
+		.feature-card:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+		}
+
+		.feature-icon {
+			width: 46px;
+			height: 46px;
+			border-radius: 12px;
+			background: #FFF7ED;
+			border: 1px solid rgba(246, 130, 31, 0.20);
+			display: grid;
+			place-items: center;
+			margin-bottom: 18px;
+			color: var(--primary-hover);
+		}
+
+		.feature-card h3 {
+			margin: 0 0 8px;
+			font-size: 1.125rem;
+			letter-spacing: -0.01em;
+		}
+
+		.feature-card p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 0.9375rem;
+		}
+
+		/* —— CTA band —— */
+		.cta-band {
+			padding: 0 0 88px;
+		}
+
+		.cta-panel {
+			border-radius: 20px;
+			padding: 56px 32px;
+			text-align: center;
+			background:
+				radial-gradient(600px 200px at 50% 0%, rgba(255, 255, 255, 0.18), transparent 70%),
+				linear-gradient(135deg, #ea580c 0%, #c2410c 55%, #9a3412 100%);
+			color: #FFFFFF;
+			box-shadow: 0 18px 48px rgba(234, 88, 12, 0.32);
+		}
+
+		.cta-panel h2 {
+			margin: 0 0 10px;
+			font-size: clamp(1.5rem, 2vw + 1rem, 2rem);
+			letter-spacing: -0.02em;
+		}
+
+		.cta-panel p {
+			margin: 0 auto 28px;
+			max-width: 46ch;
+			color: rgba(255, 255, 255, 0.92);
+			font-size: 1.0625rem;
+		}
+
+		.cta-panel .btn-primary {
+			background: #FFFFFF;
+			border-color: #FFFFFF;
+			color: #9a3412;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.18);
+		}
+
+		.cta-panel .btn-primary:hover {
+			background: #FFF7ED;
+			border-color: #FFF7ED;
+			color: #7c2d12;
+		}
+
+		/* —— Footer —— */
+		.site-footer {
+			border-top: 1px solid var(--border);
+			padding: 28px 0 36px;
+			background: rgba(255, 255, 255, 0.6);
+		}
+
+		.footer-row {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: space-between;
+			gap: 16px;
+		}
+
+		.footer-copy {
+			margin: 0;
+			font-size: 0.875rem;
+			color: var(--muted);
+		}
+
+		.footer-links {
+			display: flex;
+			gap: 22px;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			font-size: 0.875rem;
+			font-weight: 500;
+			color: var(--muted);
+		}
+
+		.footer-links a {
+			cursor: pointer;
+			transition: color 180ms ease;
+		}
+
+		.footer-links a:hover {
+			color: var(--primary-text);
+		}
+
+		.footer-links a:focus-visible {
+			outline: 2px solid var(--primary-text);
+			outline-offset: 3px;
+			border-radius: 4px;
+		}
+
+		/* —— Responsive —— */
+		@media (max-width: 900px) {
+			.feature-grid {
+				grid-template-columns: 1fr;
+				max-width: 480px;
+				margin-inline: auto;
+			}
+
+			.hero {
+				padding: 64px 0 56px;
+			}
+		}
+
+		@media (max-width: 640px) {
+			.nav {
+				justify-content: center;
+				text-align: center;
+			}
+
+			.nav-links {
+				order: 3;
+				width: 100%;
+				justify-content: center;
+				gap: 20px;
+			}
+
+			.hero-actions {
+				flex-direction: column;
+				align-items: stretch;
+			}
+
+			.hero-actions .btn {
+				width: 100%;
+			}
+
+			.cta-panel {
+				padding: 44px 22px;
+			}
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			html {
+				scroll-behavior: auto;
+			}
+
+			*,
+			*::before,
+			*::after {
+				transition-duration: 0.01ms !important;
+			}
+
+			.feature-card:hover {
+				transform: none;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<header class="site-header">
+		<div class="container nav">
+			<a class="brand" href="#">
+				<span class="brand-mark" aria-hidden="true">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+						<path d="M4 14.5c2.5-4 5-6 8-6s5.5 2 8 6" />
+						<path d="M4 14.5h16" />
+						<path d="M8 18h8" />
+					</svg>
+				</span>
+				Nimbus
+			</a>
+			<ul class="nav-links">
+				<li><a href="#features">Features</a></li>
+				<li><a href="#cta">Pricing</a></li>
+				<li><a href="#features">Docs</a></li>
+			</ul>
+			<a class="btn btn-brand" href="#cta">Get Started</a>
+		</div>
+	</header>
+
+	<main>
+		<section class="hero container">
+			<p class="hero-badge">Now with live canvas</p>
+			<h1>Ship faster, together</h1>
+			<p class="hero-sub">
+				Nimbus brings docs, tasks, and conversations into one calm workspace —
+				so your team spends less time switching and more time shipping.
+			</p>
+			<div class="hero-actions">
+				<a class="btn btn-primary btn-lg" href="#cta">Start free trial</a>
+				<a class="btn btn-ghost btn-lg" href="#features">View features</a>
+			</div>
+			<p class="hero-note">No credit card required · Free for teams up to 5</p>
+		</section>
+
+		<section class="features container" id="features" aria-labelledby="features-title">
+			<div class="section-head">
+				<h2 id="features-title">Everything your team needs, nothing it doesn't</h2>
+				<p>Three building blocks that replace a pile of half-connected tools.</p>
+			</div>
+			<div class="feature-grid">
+				<article class="feature-card">
+					<div class="feature-icon" aria-hidden="true">
+						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+							<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+							<circle cx="9" cy="7" r="4" />
+							<path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+							<path d="M16 3.13a4 4 0 0 1 0 7.75" />
+						</svg>
+					</div>
+					<h3>Real-time collaboration</h3>
+					<p>Edit docs and plans together with live cursors, comments, and instant sync across every device.</p>
+				</article>
+				<article class="feature-card">
+					<div class="feature-icon" aria-hidden="true">
+						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+							<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+						</svg>
+					</div>
+					<h3>Automations in minutes</h3>
+					<p>Wire up routines with a visual builder — assignments, reminders, and handoffs without glue code.</p>
+				</article>
+				<article class="feature-card">
+					<div class="feature-icon" aria-hidden="true">
+						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+							<path d="M3 3v18h18" />
+							<path d="M7 15v-4" />
+							<path d="M12 15V7" />
+							<path d="M17 15v-6" />
+						</svg>
+					</div>
+					<h3>Insightful analytics</h3>
+					<p>See velocity, blockers, and trends at a glance — no exports, no spreadsheets, no guesswork.</p>
+				</article>
+			</div>
+		</section>
+
+		<section class="cta-band container" id="cta" aria-labelledby="cta-title">
+			<div class="cta-panel">
+				<h2 id="cta-title">Ready to give your team a calmer day?</h2>
+				<p>Start free, invite your crew, and move your first project today. Upgrade only when you outgrow it.</p>
+				<a class="btn btn-primary btn-lg" href="#">Create your workspace</a>
+			</div>
+		</section>
+	</main>
+
+	<footer class="site-footer">
+		<div class="container footer-row">
+			<p class="footer-copy">&copy; 2026 Nimbus Inc. All rights reserved.</p>
+			<ul class="footer-links">
+				<li><a href="#">Privacy</a></li>
+				<li><a href="#">Terms</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+		</div>
+	</footer>
+</body>
+
+</html>
